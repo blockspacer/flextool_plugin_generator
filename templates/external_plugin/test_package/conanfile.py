@@ -46,11 +46,11 @@ class TestPackageConan(ConanFile):
             flex_reflect_plugin_file = os.path.join(flex_reflect_plugin_file, "flex_reflect_plugin" + ext)
             self.output.info('flex_reflect_plugin_file = %s' % (flex_reflect_plugin_file))
             #
-            external_plugin_ROOT = self.deps_cpp_info["external_plugin"].rootpath
-            external_plugin_file = external_plugin_ROOT
-            external_plugin_file = os.path.join(external_plugin_file, "lib")
-            external_plugin_file = os.path.join(external_plugin_file, "external_plugin" + ext)
-            self.output.info('external_plugin_file = %s' % (external_plugin_file))
+            tested_plugin_ROOT = self.deps_cpp_info["<%= projectName %>"].rootpath
+            tested_plugin_file = tested_plugin_ROOT
+            tested_plugin_file = os.path.join(tested_plugin_file, "lib")
+            tested_plugin_file = os.path.join(tested_plugin_file, "<%= projectName %>" + ext)
+            self.output.info('tested_plugin_file = %s' % (tested_plugin_file))
             #
             # cling_includes must point to cling/Interpreter/RuntimeUniverse.h
             cling_conan_ROOT = self.deps_cpp_info["cling_conan"].rootpath
@@ -75,6 +75,6 @@ class TestPackageConan(ConanFile):
               " --extra-arg=-I{}" \
               " --extra-arg=-I{}" \
               " {}/main.cpp".format(
-              flex_reflect_plugin_file, external_plugin_file, cling_includes, clang_includes, self.source_folder)
+              flex_reflect_plugin_file, tested_plugin_file, cling_includes, clang_includes, self.source_folder)
             self.output.info('flextool_cmd = %s' % (flextool_cmd))
             self.run(flextool_cmd, run_environment=True)

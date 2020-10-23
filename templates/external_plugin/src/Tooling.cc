@@ -1,4 +1,4 @@
-#include <external_plugin/Tooling.hpp> // IWYU pragma: associated
+#include <<%= projectName %>/Tooling.hpp> // IWYU pragma: associated
 
 #include <flexlib/reflect/ReflTypes.hpp>
 #include <flexlib/reflect/ReflectAST.hpp>
@@ -140,7 +140,7 @@ ExternalPluginTooling::~ExternalPluginTooling()
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 }
 
-void ExternalPluginTooling::external_plugin_custom_annotation(
+void ExternalPluginTooling::<%= projectName %>_custom_annotation(
   const std::string& processedAnnotation
   , clang::AnnotateAttr* annotateAttr
   , const clang_utils::MatchResult& matchResult
@@ -158,7 +158,7 @@ void ExternalPluginTooling::external_plugin_custom_annotation(
   DCHECK(nodeDecl);
 
   VLOG(9)
-    << "external_plugin_custom_annotation called...";
+    << "<%= projectName %>_custom_annotation called...";
 
   clang::SourceManager &SM
     = rewriter.getSourceMgr();

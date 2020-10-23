@@ -9,15 +9,15 @@ from distutils.util import strtobool
 
 basis_plugin_helper = python_requires("basis_plugin_helper/[~=0.0]@conan/stable")
 
-class external_plugin_conan_project(basis_plugin_helper.CMakePackage):
-    name = "external_plugin"
+class <%= projectName %>_conan_project(basis_plugin_helper.CMakePackage):
+    name = "<%= projectName %>"
 
     version = "master"
     url = "https://CHANGE_ME"
     license = "MIT" # CHANGE_ME
     author = "CHANGE_ME <>"
 
-    description = "external_plugin: CHANGE_ME"
+    description = "<%= projectName %>: CHANGE_ME"
     topics = tuple(['c++', 'CHANGE_ME'])
 
     options = dict(basis_plugin_helper.CMakePackage.plugin_options, **{
@@ -64,7 +64,7 @@ class external_plugin_conan_project(basis_plugin_helper.CMakePackage):
 
     settings = basis_plugin_helper.CMakePackage.plugin_settings
 
-    exports_sources = tuple(["external_plugin/*"]) \
+    exports_sources = tuple(["<%= projectName %>/*"]) \
       + basis_plugin_helper.CMakePackage.plugin_exports_sources
 
     def build_requirements(self):

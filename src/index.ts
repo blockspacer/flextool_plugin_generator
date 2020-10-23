@@ -27,6 +27,16 @@ const QUESTIONS = [
       if (/^([A-Za-z\-\_\d])+$/.test(input)) return true;
       else return 'Project name may only include letters, numbers, underscores and hashes.';
     }
+  },
+  {
+    name: 'copyright',
+    type: 'input',
+    message: 'Project copyright:',
+    when: () => !yargs.argv['copyright'],
+    validate: (input: string) => {
+      if (/^([A-Za-z\-\_\d])+$/.test(input)) return true;
+      else return 'Project copyright may only include letters, numbers, underscores and hashes.';
+    }
   }
 ];
 
@@ -39,6 +49,7 @@ export interface TemplateConfig {
 
 export interface CliOptions {
   projectName: string
+  copyright: string
   templateName: string
   templatePath: string
   tartgetPath: string
@@ -52,12 +63,14 @@ inquirer.prompt(QUESTIONS)
 
     const projectChoice = answers['template'];
     const projectName = answers['name'];
+    const copyright = answers['copyright'];
     const templatePath = path.join(__dirname, 'templates', projectChoice);
     const tartgetPath = path.join(CURR_DIR, projectName);
     const templateConfig = getTemplateConfig(templatePath);
 
     const options: CliOptions = {
       projectName,
+      copyright,
       templateName: projectChoice,
       templatePath,
       tartgetPath,
@@ -68,7 +81,14 @@ inquirer.prompt(QUESTIONS)
       return;
     }
 
-    createDirectoryContents(templatePath, projectName, templateConfig);
+    createDirectoryContents(
+      templatePath
+      , projectName
+      , templateConfig
+      , {
+        projectName
+        , copyright
+      });
 
     if (!postProcess(options)) {
       return;
@@ -151,31 +171,140 @@ function postProcessNode(options: CliOptions) {
   return true;
 }
 
-const SKIP_FILES = ['node_modules', '.template.json'];
+const SKIP_FILES = [
+  'node_modules',
+  '.template.json',
+  '.png',
+  '.jpg',
+  '.jpeg',
+  '.bmp',
+  '.gif',
+  '.tiff',
+  '.aif',
+  '.cda',
+  '.mid',
+  '.midi',
+  '.mp3',
+  '.mpa',
+  '.ogg',
+  '.wav',
+  '.wma',
+  '.wpl',
+  '.7z',
+  '.arj',
+  '.deb',
+  '.pkg',
+  '.rar',
+  '.rpm',
+  '.tar.gz',
+  '.z',
+  '.zip',
+  '.bin',
+  '.dmg',
+  '.iso',
+  '.toast',
+  '.vcd',
+  '.dat',
+  '.db',
+  '.dbf',
+  '.log',
+  '.tmp',
+  '.directory',
+  '.sav',
+  '.sql',
+  '.tar',
+  '.email',
+  '.eml',
+  '.msg',
+  '.apk',
+  '.bat',
+  '.cgi',
+  '.pl',
+  '.exe',
+  '.dll',
+  '.so',
+  '.lib',
+  '.a',
+  '.jar',
+  '.msi',
+  '.fnt',
+  '.fon',
+  '.otf',
+  '.ttf',
+  '.ai',
+  '.psd',
+  '.ico',
+  '.ps',
+  '.svg',
+  '.ppt',
+  '.pptx',
+  '.key',
+  '.pps',
+  '.odp',
+  '.pdf',
+  '.doc',
+  '.docx'
+];
 
-function createDirectoryContents(templatePath: string, projectName: string, config: TemplateConfig) {
+function createDirectoryContents(
+  templatePath: string
+  , projectName: string
+  , config: TemplateConfig
+  , tplOptions: template.TemplateData)
+{
   const filesToCreate = fs.readdirSync(templatePath);
 
-  filesToCreate.forEach(file => {
-    const origFilePath = path.join(templatePath, file);
+  console.log(`processing files in directory ${templatePath}`);
+
+  filesToCreate.forEach(fileName => {
+    const origFilePath = path.join(templatePath, fileName);
 
     // get stats about the current file
     const stats = fs.statSync(origFilePath);
 
-    if (SKIP_FILES.indexOf(file) > -1) return;
+    for (const skipName in SKIP_FILES) {
+      if (fileName.indexOf(SKIP_FILES[skipName]) > -1) {
+        console.log(`skipped file name ${fileName} because it contains ${SKIP_FILES[skipName]}`);
+        return;
+      }
+    }
 
     if (stats.isFile()) {
       let contents = fs.readFileSync(origFilePath, 'utf8');
 
-      contents = template.render(contents, { projectName });
+      console.log(chalk.green(`Processing file name: ${origFilePath}`));
 
-      const writePath = path.join(CURR_DIR, projectName, file);
-      fs.writeFileSync(writePath, contents, 'utf8');
-    } else if (stats.isDirectory()) {
-      fs.mkdirSync(path.join(CURR_DIR, projectName, file));
+      const newFileName
+        = template.render(fileName, tplOptions);
+
+      console.log(chalk.green(`Output file name: ${newFileName}`));
+
+      console.log(chalk.green(`Processing file contents for ${origFilePath}`));
+
+      const newContents
+        = template.render(contents, tplOptions);
+
+      const writePath
+        = path.join(CURR_DIR, projectName, newFileName);
+
+      fs.writeFileSync(writePath, newContents, 'utf8');
+    } else if (stats.isDirectory())
+    {
+      console.log(chalk.green(`Processing directory name: ${origFilePath}`));
+
+      const newDirectoryName
+        = template.render(fileName, tplOptions);
+
+      console.log(chalk.green(`Output directory name: ${newDirectoryName}`));
+
+      fs.mkdirSync(path.join(CURR_DIR, projectName, newDirectoryName));
 
       // recursive call
-      createDirectoryContents(path.join(templatePath, file), path.join(projectName, file), config);
+      createDirectoryContents(
+        path.join(templatePath, fileName)
+        , path.join(projectName, newDirectoryName)
+        , config
+        , tplOptions);
     }
   });
 }

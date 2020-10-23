@@ -3,7 +3,7 @@
 # NOTE: preserve directory structure
 install(
   DIRECTORY
-    ${CMAKE_SOURCE_DIR}/include/external_plugin
+    ${CMAKE_SOURCE_DIR}/include/<%= projectName %>
   DESTINATION
     ${CMAKE_INSTALL_INCLUDEDIR}
   FILES_MATCHING
@@ -83,6 +83,6 @@ install(FILES
 )
 
 install(FILES
-  "${CMAKE_CURRENT_SOURCE_DIR}/conf/external_plugin.conf" # source directory
+  "${CMAKE_CURRENT_SOURCE_DIR}/conf/<%= projectName %>.conf" # source directory
   DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" # target directory
 )

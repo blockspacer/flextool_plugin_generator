@@ -1,4 +1,4 @@
-#include <external_plugin/EventHandler.hpp>
+#include <<%= projectName %>/EventHandler.hpp>
 
 #include <flexlib/ToolPlugin.hpp>
 #include <flexlib/core/errors/errors.hpp>

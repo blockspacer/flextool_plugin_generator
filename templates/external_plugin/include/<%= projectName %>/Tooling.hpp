@@ -25,7 +25,7 @@ public:
   ~ExternalPluginTooling();
 
   // extracts template code from annotated varible
-  void external_plugin_custom_annotation(
+  void <%= projectName %>_custom_annotation(
     const std::string& processedAnnotaion
     , clang::AnnotateAttr* annotateAttr
     , const clang_utils::MatchResult& matchResult

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include <external_plugin/Tooling.hpp>
+#include <<%= projectName %>/Tooling.hpp>
 
 #include <flexlib/ToolPlugin.hpp>
 #if defined(CLING_IS_ON)

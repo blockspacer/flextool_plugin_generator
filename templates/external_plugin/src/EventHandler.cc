@@ -1,4 +1,4 @@
-#include <external_plugin/EventHandler.hpp> // IWYU pragma: associated
+#include <<%= projectName %>/EventHandler.hpp> // IWYU pragma: associated
 
 #include <flexlib/ToolPlugin.hpp>
 #include <flexlib/core/errors/errors.hpp>
@@ -108,11 +108,11 @@ void ExternalPluginEventHandler::RegisterAnnotationMethods(
   {
     VLOG(9)
       << "registered annotation method:"
-         " external_plugin_custom_annotation";
+         " <%= projectName %>_custom_annotation";
     CHECK(tooling_);
-    annotationMethods["{external_plugin_custom_annotation};"] =
+    annotationMethods["{<%= projectName %>_custom_annotation};"] =
       base::BindRepeating(
-        &ExternalPluginTooling::external_plugin_custom_annotation
+        &ExternalPluginTooling::<%= projectName %>_custom_annotation
         , base::Unretained(tooling_.get()));
   }
 }

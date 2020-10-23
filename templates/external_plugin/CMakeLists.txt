@@ -1,7 +1,7 @@
 ﻿cmake_minimum_required(VERSION 3.8)
 
 # project() must be before checks, see https://stackoverflow.com/a/26437667/10904212
-set(PROJECT_NAME "external_plugin")
+set(PROJECT_NAME "<%= projectName %>")
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/parse_version_file.cmake)
 
