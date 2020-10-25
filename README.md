@@ -1,8 +1,8 @@
 # About
 
-Nodejs cli that helps to create a new plugin for flextool.
+Nodejs cli that helps to create a new plugin for flextool. Bootstrap a new project from a template.
 
-NOTE: Template contain filenames that ma be invalid on Windows, so use tools like Docker under Windows.
+NOTE: Template contain filenames that may be invalid on Windows, so use tools like Docker under Windows.
 
 ## Usage
 
