@@ -31,8 +31,8 @@ You can change plugin logic in `src/Tooling.cc`, see `<%= projectName %>_custom_
 Make sure that you installed [flextool](https://github.com/blockspacer/flextool) with common plugins (you can use `buildConanThirdparty.cmake` script).
 
 ```bash
-export CXX=clang++-6.0
-export CC=clang-6.0
+export CXX=clang++-10
+export CC=clang-10
 
 # NOTE: change `build_type=Debug` to `build_type=Release` in production
 # NOTE: use --build=missing if you got error `ERROR: Missing prebuilt package`
@@ -56,8 +56,8 @@ Make sure that you installed [flextool](https://github.com/blockspacer/flextool)
 Commands below may be used to build project locally, without system-wide installation.
 
 ```bash
-export CXX=clang++-6.0
-export CC=clang-6.0
+export CXX=clang++-10
+export CC=clang-10
 
 cmake -E remove_directory build
 
@@ -154,8 +154,8 @@ For details, see: [https://include-what-you-use.org/](https://include-what-you-u
 Usage (runs cmake with `-DENABLE_IWYU=ON`):
 
 ```bash
-export CXX=clang++-6.0
-export CC=clang-6.0
+export CXX=clang++-10
+export CC=clang-10
 
 # creates local build in separate folder and runs cmake targets
 cmake -DIWYU="ON" -DCLEAN_OLD="ON" -P tools/run_tool.cmake
