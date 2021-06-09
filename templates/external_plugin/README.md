@@ -31,22 +31,24 @@ You can change plugin logic in `src/Tooling.cc`, see `<%= projectName %>_custom_
 Make sure that you installed [flextool](https://github.com/blockspacer/flextool) with common plugins (you can use `buildConanThirdparty.cmake` script).
 
 ```bash
+export VERBOSE=1
+export CONAN_REVISIONS_ENABLED=1
+export CONAN_VERBOSE_TRACEBACK=1
+export CONAN_PRINT_RUN_COMMANDS=1
+export CONAN_LOGGING_LEVEL=10
+export GIT_SSL_NO_VERIFY=true
+
 export CXX=clang++-10
 export CC=clang-10
 
 # NOTE: change `build_type=Debug` to `build_type=Release` in production
 # NOTE: use --build=missing if you got error `ERROR: Missing prebuilt package`
-CONAN_REVISIONS_ENABLED=1 \
-CONAN_VERBOSE_TRACEBACK=1 \
-CONAN_PRINT_RUN_COMMANDS=1 \
-CONAN_LOGGING_LEVEL=10 \
-GIT_SSL_NO_VERIFY=true \
-    cmake -E time \
-      conan create . conan/stable \
-      -s build_type=Debug -s cling_conan:build_type=Release \
-      -o <%= projectName %>:shared=True \
-      --profile clang \
-          -e <%= projectName %>:enable_tests=True
+cmake -E time \
+  conan create . conan/stable \
+  -s build_type=Debug -s cling_conan:build_type=Release \
+  -o <%= projectName %>:shared=True \
+  --profile clang \
+      -e <%= projectName %>:enable_tests=True
 ```
 
 ## Local development
@@ -66,20 +68,22 @@ cmake -E make_directory build
 # NOTE: change `build_type=Debug` to `build_type=Release` in production
 build_type=Debug
 
+export VERBOSE=1
+export CONAN_REVISIONS_ENABLED=1
+export CONAN_VERBOSE_TRACEBACK=1
+export CONAN_PRINT_RUN_COMMANDS=1
+export CONAN_LOGGING_LEVEL=10
+export GIT_SSL_NO_VERIFY=true
+
 # install conan requirements
-CONAN_REVISIONS_ENABLED=1 \
-    CONAN_VERBOSE_TRACEBACK=1 \
-    CONAN_PRINT_RUN_COMMANDS=1 \
-    CONAN_LOGGING_LEVEL=10 \
-    GIT_SSL_NO_VERIFY=true \
-        cmake -E chdir build cmake -E time \
-            conan install \
-            -s build_type=${build_type} -s cling_conan:build_type=Release \
-            -o <%= projectName %>:shared=True \
-            --build=missing \
-            --profile clang \
-                -e enable_tests=True \
-                ..
+cmake -E chdir build cmake -E time \
+    conan install \
+    -s build_type=${build_type} -s cling_conan:build_type=Release \
+    -o <%= projectName %>:shared=True \
+    --build=missing \
+    --profile clang \
+        -e enable_tests=True \
+        ..
 
 # optional: remove generated files (change paths to yours)
 rm build/*generated*
@@ -114,16 +118,18 @@ git clone -b testing/1.90 https://github.com/bincrafters/conan-cppcheck_installe
 
 cd conan-cppcheck_installer
 
+export VERBOSE=1
+export CONAN_REVISIONS_ENABLED=1
+export CONAN_VERBOSE_TRACEBACK=1
+export CONAN_PRINT_RUN_COMMANDS=1
+export CONAN_LOGGING_LEVEL=10
+export GIT_SSL_NO_VERIFY=true
+
 # NOTE: change `build_type=Debug` to `build_type=Release` in production
 # NOTE: use --build=missing if you got error `ERROR: Missing prebuilt package`
-CONAN_REVISIONS_ENABLED=1 \
-CONAN_VERBOSE_TRACEBACK=1 \
-CONAN_PRINT_RUN_COMMANDS=1 \
-CONAN_LOGGING_LEVEL=10 \
-GIT_SSL_NO_VERIFY=true \
-    cmake -E time \
-      conan create . conan/stable \
-      -s build_type=Release
+cmake -E time \
+  conan create . conan/stable \
+  -s build_type=Release
 ```
 
 Usage (runs cmake with `-DENABLE_CPPCHECK=ON`):
